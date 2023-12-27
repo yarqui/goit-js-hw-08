@@ -3,7 +3,7 @@ import { LS_KEYS, readFromLS, removeFromLS, writeToLS } from './common';
 
 const form = document.querySelector('form.feedback-form');
 
-let formData = {};
+let formData = readFromLS(LS_KEYS.feedbackForm) ?? {};
 
 const handleSubmit = e => {
   e.preventDefault();
