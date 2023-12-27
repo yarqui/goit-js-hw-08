@@ -1,5 +1,6 @@
 import Player from '@vimeo/player';
 import throttle from 'lodash.throttle';
+import { readFromLS, writeToLS } from './common';
 
 const LS_KEYS = {
   currentTime: 'videoplayer-current-time',
@@ -7,18 +8,6 @@ const LS_KEYS = {
 
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe, { id: 'vimeo-player' });
-
-const readFromLS = key => {
-  try {
-    return JSON.parse(localStorage.getItem(key));
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
-const writeToLS = (key, value) => {
-  return localStorage.setItem(key, JSON.stringify(value));
-};
 
 player.on(
   'timeupdate',
