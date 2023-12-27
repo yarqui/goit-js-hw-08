@@ -11,9 +11,8 @@ export const readFromLS = key => {
   }
 };
 
-export const writeToLS = (key, value) => {
-  return localStorage.setItem(key, JSON.stringify(value));
-};
+export const writeToLS = (key, value) =>
+  localStorage.setItem(key, JSON.stringify(value));
 
 export const removeFromLS = key => {
   localStorage.removeItem(key);
