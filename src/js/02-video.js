@@ -1,10 +1,6 @@
 import Player from '@vimeo/player';
 import throttle from 'lodash.throttle';
-import { readFromLS, writeToLS } from './common';
-
-const LS_KEYS = {
-  currentTime: 'videoplayer-current-time',
-};
+import { LS_KEYS, readFromLS, writeToLS } from './common';
 
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe, { id: 'vimeo-player' });

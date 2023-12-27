@@ -1,5 +1,5 @@
 import throttle from 'lodash.throttle';
-import { readFromLS, removeFromLS, writeToLS } from './common';
+import { LS_KEYS, readFromLS, removeFromLS, writeToLS } from './common';
 
 const form = document.querySelector('form.feedback-form');
 
@@ -17,19 +17,19 @@ const createFormData = target => {
 const handleSubmit = e => {
   e.preventDefault();
   const data = createFormData(e.currentTarget);
-  removeFromLS('feedback-form-state');
+  removeFromLS(LS_KEYS.feedbackForm);
   form.reset();
   console.log(data);
 };
 
 const handleInput = throttle(e => {
   const data = createFormData(e.currentTarget);
-  writeToLS('feedback-form-state', JSON.stringify(data));
+  writeToLS(LS_KEYS.feedbackForm, data);
 }, 1000);
 
 const handleLoad = () => {
   try {
-    const persistedData = JSON.parse(readFromLS('feedback-form-state'));
+    const persistedData = JSON.parse(readFromLS(LS_KEYS.feedbackForm));
 
     if (persistedData) {
       for (let el of form.elements) {
