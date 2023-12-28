@@ -13,7 +13,7 @@ const handleSubmit = e => {
 };
 
 const handleInput = throttle(e => {
-  formData[e.target.name] = e.target.value.trim();
+  formData[e.target.name] = e.target.value.replace(/\s+/g, ' ').trim();
   writeToLS(LS_KEYS.feedbackForm, formData);
 }, 1000);
 
