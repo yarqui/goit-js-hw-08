@@ -88,6 +88,9 @@ test.describe('Inputs', () => {
     await email.fill(INPUTS_WITH_WHITESPACE.email);
     await message.fill(INPUTS_WITH_WHITESPACE.message);
 
+    // ❗use waitForTimeout because of the throttle on input
+    await page.waitForTimeout(1000);
+
     await page.reload();
     await page.waitForURL(
       'https://yarqui.github.io/goit-js-hw-08/03-feedback.html'
