@@ -4,6 +4,10 @@ const INPUT_FILL = {
   email: 'y.pelykh@gmail.com',
   message: 'Hi. Nice to meet you',
 };
+const INPUTS_WITH_WHITESPACE = {
+  email: '    y.pelykh@gmail.com    ',
+  message: '   Hi.   Nice   to meet    you    ',
+};
 
 const createDefaultInputs = async (page: Page) => {
   const email = page.getByLabel('Email');
@@ -65,17 +69,32 @@ test.describe('Inputs', () => {
     await expect(message).toBeEmpty();
   });
 
-  test('should trim whitespaces on writing to local storage', async ({
+  test('should trim whitespaces and replace double whitespaces with single one on writing to local storage', async ({
     page,
   }) => {
     const email = page.getByLabel('Email');
     const message = page.getByLabel('Message');
-    const inputsWithWhitespaces = {
-      email: '    y.pelykh   @gmail.   com    ',
-      message: '   Hi.     Nice to meet    you',
-    };
-    await email.fill(`   ${inputsWithWhitespaces.email}    `);
-    await message.fill(`   ${inputsWithWhitespaces.message}    `);
+
+    await email.fill(INPUTS_WITH_WHITESPACE.email);
+    await message.fill(INPUTS_WITH_WHITESPACE.message);
+
+    await checkStateOfLocalStorage(page, INPUT_FILL);
+  });
+
+  test.only('should persist state on page reload', async ({ page }) => {
+    const email = page.getByLabel('Email');
+    const message = page.getByLabel('Message');
+
+    await email.fill(INPUTS_WITH_WHITESPACE.email);
+    await message.fill(INPUTS_WITH_WHITESPACE.message);
+
+    await page.reload();
+    await page.waitForURL(
+      'https://yarqui.github.io/goit-js-hw-08/03-feedback.html'
+    );
+
+    await expect(email).toHaveValue(INPUT_FILL.email);
+    await expect(message).toHaveValue(INPUT_FILL.message);
 
     await checkStateOfLocalStorage(page, INPUT_FILL);
   });
