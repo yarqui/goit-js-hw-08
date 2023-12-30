@@ -81,7 +81,7 @@ test.describe('Inputs', () => {
     await checkStateOfLocalStorage(page, INPUT_FILL);
   });
 
-  test.only('should persist state on page reload', async ({ page }) => {
+  test('should persist state on page reload', async ({ page }) => {
     const email = page.getByLabel('Email');
     const message = page.getByLabel('Message');
 
