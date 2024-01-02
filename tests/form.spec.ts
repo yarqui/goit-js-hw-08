@@ -32,18 +32,25 @@ const checkStateOfLocalStorage = async (
   );
 };
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, context }) => {
+  // throttle the network requests if needed
+  // await context.route('**', route => {
+  //   setTimeout(() => {
+  //     route.continue();
+  //   }, 4000);
+  // });
+
   const response = await page.goto(
     'https://yarqui.github.io/goit-js-hw-08/03-feedback.html'
   );
 
-  if (response) {
-    expect(response.status()).toBe(200);
-  }
+  // check first if the status is successful before each group of tests
+  expect(response?.status()).toBe(200);
 });
 
 test.describe('Inputs', () => {
   test.beforeEach(async ({ page }) => {
+    // create default todos before each test
     await createDefaultInputs(page);
   });
 
@@ -62,9 +69,12 @@ test.describe('Inputs', () => {
   test('should allow to clear all inputs', async ({ page }) => {
     const email = page.getByLabel('Email');
     const message = page.getByLabel('Message');
+
+    // clear all inputs
     await email.fill('');
     await message.fill('');
 
+    // check whether inputs are empty
     await expect(email).toBeEmpty();
     await expect(message).toBeEmpty();
   });
@@ -75,9 +85,11 @@ test.describe('Inputs', () => {
     const email = page.getByLabel('Email');
     const message = page.getByLabel('Message');
 
+    // fill inputs with spaces and double spaces
     await email.fill(INPUTS_WITH_WHITESPACE.email);
     await message.fill(INPUTS_WITH_WHITESPACE.message);
 
+    // check whether inputs were trimmed correctly before writing to local storage
     await checkStateOfLocalStorage(page, INPUT_FILL);
   });
 
@@ -85,20 +97,21 @@ test.describe('Inputs', () => {
     const email = page.getByLabel('Email');
     const message = page.getByLabel('Message');
 
+    // fill inputs with spaces and double spaces
     await email.fill(INPUTS_WITH_WHITESPACE.email);
     await message.fill(INPUTS_WITH_WHITESPACE.message);
 
-    // ❗use waitForTimeout because of the throttle on input
-    await page.waitForTimeout(1000);
+    // check whether inputs were trimmed correctly before writing to local storage
+    await checkStateOfLocalStorage(page, INPUT_FILL);
+    // ❗or use waitForTimeout because of the throttle on input.
+    // otherwise the message input doesn't have time to be written to local storage
+    // await page.waitForTimeout(1000);
 
+    // reloading page to check whether browser correctly persists input values
     await page.reload();
-    await page.waitForURL(
-      'https://yarqui.github.io/goit-js-hw-08/03-feedback.html'
-    );
 
     await expect(email).toHaveValue(INPUT_FILL.email);
     await expect(message).toHaveValue(INPUT_FILL.message);
-
     await checkStateOfLocalStorage(page, INPUT_FILL);
   });
 });
