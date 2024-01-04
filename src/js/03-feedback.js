@@ -1,5 +1,11 @@
 import throttle from 'lodash.throttle';
-import { LS_KEYS, readFromLS, removeFromLS, writeToLS } from './common';
+import {
+  LS_KEYS,
+  readFromLS,
+  removeFromLS,
+  thereAreEmptyInputs,
+  writeToLS,
+} from './common';
 
 const form = document.querySelector('form.feedback-form');
 
@@ -7,9 +13,16 @@ let formData = readFromLS(LS_KEYS.feedbackForm) ?? {};
 
 const handleSubmit = e => {
   e.preventDefault();
+
+  if (thereAreEmptyInputs(formData, 2)) {
+    alert('❌ All inputs should be filled!');
+    return;
+  }
+
   removeFromLS(LS_KEYS.feedbackForm);
   form.reset();
   console.log(formData);
+  formData = {};
 };
 
 const handleInput = throttle(e => {

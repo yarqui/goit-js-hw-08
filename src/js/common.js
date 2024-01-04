@@ -17,3 +17,13 @@ export const writeToLS = (key, value) =>
 export const removeFromLS = key => {
   localStorage.removeItem(key);
 };
+
+export const thereAreEmptyInputs = (form, expectedInputQuantity) => {
+  const formValues = Object.values(form);
+  if (
+    formValues.length < expectedInputQuantity ||
+    formValues.some(val => val === '')
+  ) {
+    return true;
+  }
+};
