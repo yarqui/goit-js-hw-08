@@ -1,0 +1,2 @@
+const a={currentTime:"videoplayer-current-time",feedbackForm:"feedback-form-state"},s=e=>{try{return JSON.parse(localStorage.getItem(e))}catch(r){console.error(r.message)}},c=(e,r)=>localStorage.setItem(e,JSON.stringify(r)),m=e=>{localStorage.removeItem(e)},n=(e,r)=>{const t=Object.values(e);if(t.length<r||t.some(o=>o===""))return!0};export{a as L,m as a,s as r,n as t,c as w};
+//# sourceMappingURL=common-a29fadab.js.map
