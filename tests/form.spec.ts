@@ -124,7 +124,7 @@ test.describe('Inputs', () => {
   test.fixme(
     'should clear inputs and local storage key on "submit button" click',
     async ({ page }) => {
-      // FIXME: works fixme in --debug mode. Otherwise it doesn't clear the inputs
+      // FIXME: works only --debug mode. Otherwise it doesn't clear the inputs
       const email = page.getByLabel('Email');
       const message = page.getByLabel('Message');
       const submitBtn = page.getByRole('button', { name: 'Submit' });
